@@ -1,3 +1,15 @@
+# K2 Improvements Script Maintainers Fork
+
+JaminCollins has archived his repo, I have the cartographer as well as use the k2-improvements script on my K2 Plus.
+I'll be updating this repo with any bug reports that i can reproduce and hopefully keep this project going into newer firmware versions released by Creality.
+
+My webcam environment is different with my addition of a nozzle-camera, so i cannot debug webcam issues, but send a report and hopefully we can solve it.
+
+Below is his prior Readme.md file, please read the documentation.
+If you're curious what each of these scripts do, i encourage all to open the install.sh files and dive into the code.
+You'd be surprised what you'll learn. 
+
+
 # K2 Improvements
 
 ## DISCLAIMER
