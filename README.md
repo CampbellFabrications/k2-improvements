@@ -10,6 +10,8 @@ If you're curious what each of these scripts do, i encourage all to open the ins
 You'd be surprised what you'll learn. 
 
 
+Donations are definitely _not required_, however they are always appreciated.  If you'd like to donate you can do so [here](https://ko-fi.com/campbellfabrications)
+
 # K2 Improvements
 
 ## DISCLAIMER
