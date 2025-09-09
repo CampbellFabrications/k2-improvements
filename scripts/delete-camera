@@ -14,4 +14,5 @@ if type -p curl > /dev/null; then
 else
     CURL=./python-curl.py
 fi
+
 ${CURL} -X DELETE "http://localhost:4408/server/webcams/item?name=${1}"
