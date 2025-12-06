@@ -10,7 +10,7 @@ test -d ~/printer_data/config/custom || mkdir -p ~/printer_data/config/custom
 ln -sf ${SCRIPT_DIR}/KAMP_Settings.cfg \
     ~/printer_data/config/custom/KAMP_settings.cfg
 # add KAMP_Settings.cfg to printer.cfg
-python ${SCRIPT_DIR}/../../../scripts/ensure_included.py \
+python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
     ~/printer_data/config/printer.cfg custom/KAMP_Settings.cfg
 # add kamp folder to printer config folder
 ln -sf ${SCRIPT_DIR}/KAMP \
@@ -19,7 +19,7 @@ ln -sf ${SCRIPT_DIR}/KAMP \
 ln -sf ${SCRIPT_DIR}/kamp_macros.cfg \
     ~/printer_data/config/custom/kamp_macros.cfg
 # include macros to file
-python ${SCRIPT_DIR}/../../../scripts/ensure_included.py \
+python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
    ~/printer_data/config/printer.cfg custom/kamp_macros.cfg
 # add start_print override
 #ln -sf ${SCRIPT_DIR}/start_print.cfg \
