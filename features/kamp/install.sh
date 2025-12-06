@@ -8,7 +8,7 @@ test -d ~/printer_data/config/custom || mkdir -p ~/printer_data/config/custom
 
 # add KAMP_Settings to the custom folder
 ln -sf ${SCRIPT_DIR}/KAMP_Settings.cfg \
-    ~/printer_data/config/custom/KAMP_settings.cfg
+    ~/printer_data/config/custom/KAMP_Settings.cfg
 # add KAMP_Settings.cfg to printer.cfg
 python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
     ~/printer_data/config/printer.cfg custom/KAMP_Settings.cfg
