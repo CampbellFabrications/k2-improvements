@@ -18,7 +18,7 @@ The linux flash script is provided by JaminCollins and is suitable to run on Deb
 2. Open terminal and download the script by running the following in a terminal:
 
     ```bash
-    wget https://raw.githubusercontent.com/jamincollins/k2-improvements/refs/heads/main/features/cartographer/firmware/flash.sh
+    wget https://raw.githubusercontent.com/campbellfabrications/k2-improvements/refs/heads/main/features/cartographer/firmware/flash.sh
     ```
 
 3. Run script by entering `bash ./flash.sh` in the terminal and hitting enter
@@ -35,7 +35,7 @@ The Windows installation is a modified version of the above provided by bigadz a
 4. Open Ubuntu WSL (as Administrator) and download the flash script by entering
 
     ```bash
-    wget https://raw.githubusercontent.com/jamincollins/k2-improvements/refs/heads/main/features/cartographer/firmware/WSLFlash.sh
+    wget https://raw.githubusercontent.com/campbellfabrications/k2-improvements/refs/heads/main/features/cartographer/firmware/WSLFlash.sh
     ```
 
 5. Run the script by entering `bash ./WSLFlash.sh` in the terminal and hitting enter
@@ -61,7 +61,7 @@ Cartographer Flashing:
 4. Download the script by running the following in the terminal:
 
     ```bash
-    wget https://raw.githubusercontent.com/jamincollins/k2-improvements/refs/heads/main/features/cartographer/firmware/flash.sh
+    wget https://raw.githubusercontent.com/campbellfabrications/k2-improvements/refs/heads/main/features/cartographer/firmware/flash.sh
     ```
 
 5. Run script by entering `bash ./flash.sh` in the terminal and hitting enter

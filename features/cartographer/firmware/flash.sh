@@ -25,7 +25,7 @@ prereqs() {
             ;;
     esac
 }
-
+# TODO: Needs address or separation from official repo to fork repo for carto v4 firmware.
 gather_repositories() {
     git clone "https://github.com/Klipper3d/klipper" $WORKDIR/klipper
     git clone "https://github.com/Cartographer3D/cartographer-klipper.git" $WORKDIR/cartographer-klipper
@@ -54,6 +54,7 @@ flash_cartographer() {
     CATAPULT_DEV=$(ls /dev/serial/by-id/usb-katapult*)
     sudo $WORKDIR/klippy-env/bin/python $WORKDIR/klipper/lib/canboot/flash_can.py -f $WORKDIR/cartographer-klipper/firmware/v2-v3/survey/5.1.0/Survey_Cartographer_K1_USB_8kib_offset.bin -d $CATAPULT_DEV
 }
+# needs additions for checking firmware version for v2-v3 and v4 cartographer from new firmware packages.
 
 prereqs
 gather_repositories
