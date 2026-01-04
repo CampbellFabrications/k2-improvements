@@ -8,6 +8,12 @@ If you're curious what each of these scripts do, i encourage all to open the ins
 You'd be surprised what you'll learn. 
 
 
+
+# NOTICE
+* Version 1.1.4.8 is not compatible with k2-improvements. 
+* Recommended latest compatible version is 1.1.3.13.
+* Cartographer v4 is currently unsupported pending firmware and software changes.
+
 ## DISCLAIMER
 
 Use at your own risk, I'm not responsible for fires or broken dreams.  But you do get to keep both halves if something breaks.
@@ -82,7 +88,6 @@ Massive Thanks to [Jacob10383](https://github.com/Jacob10383) for [This](https:/
 Set this value to `is_non_critical: true` to allow disconnects without the printer stopping.
 
 
-
 ## Features
 
 * [axis_twist_compensation](./features/axis_twist_compensation/README.md)
@@ -107,7 +112,9 @@ Sadly, many of the K2 beds resemble a taco or valley.  In the [bed_leveling](bed
 
 ## Credits
 
+
 * [@jamincollins](https://github.com/jamincollins) - The Guy who made this project to begin with
+* [@Jacob10383](https://github.com/Jacob10383/) - KAMP, Resonance Sweeping changes for `shaper_calibrate`, slowly merging his fork and standalone Printer repo into this repo.
 * [@Guilouz](https://github.com/Guilouz) - standing on the shoulders of giants
 * [@stranula](https://github.com/stranula)
 * [@juliosueiras](https://github.com/juliosueiras)
@@ -118,6 +125,8 @@ Sadly, many of the K2 beds resemble a taco or valley.  In the [bed_leveling](bed
 * Entware - [https://github.com/Entware/Entware](https://github.com/Entware/Entware)
 * Obico - [https://www.obico.io/](https://www.obico.io/)
 * SimplyPrint - [https://simplyprint.io/](https://simplyprint.io/)
+* KAMP - [https://github.com/kyleisah](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging)
+* GuppyScreen - [https://github.com/foo](https://github.com/foo/guppyscreen)
 
 ## FAQ
 
