@@ -5,114 +5,78 @@ SCRIPT_DIR=$(readlink -f $(dirname ${0}))
 
 cd ${HOME}
 
-export TMPDIR=/mnt/UDISK/tmp
-
-if [ ! -d cartographer-klipper/.git ]; then
-    if [ -d cartographer-klipper ]; then
-        rm -rf cartographer-klipper
+# clone cartographer plugin
+if [ ! -d cartographer3d-plugin/.git ]; then
+    echo "I: cloning cartographer plugin"
+    if [ -d cartographer3d-plugin ]; then
+        rm -rf cartographer3d-plugin
     fi
-    git clone https://github.com/CampbellFabrications/cartographer-klipper.git
-    git -C cartographer-klipper checkout k2
+    git clone https://github.com/CampbellFabrications/cartographer3d-plugin.git
 fi
 
-if [ -L klippy-env ]; then
-    echo "I: moving klippy-env to /mnt/UDISK/root"
-    # move lippy-env to /mnt/UDISK
-    rm -f klippy-env
-    rsync -SHa /usr/share/klippy-env/ klippy-env/
+echo "I: installing python dependencies"
+~/klippy-env/bin/pip install --disable-pip-version-check typing_extensions
+
+# create shim to import cartographer into klipper
+cat > ~/klipper/klippy/extras/cartographer.py << 'EOF'
+import sys
+sys.path.insert(0, '/mnt/UDISK/root/cartographer3d-plugin/src')
+from cartographer.extra import *
+EOF
+
+# check if native USB ACM support is built into kernel
+# skip all usb handling(bridge, wrapper, service) if so
+if ! zcat /proc/config.gz 2>/dev/null | grep -q "CONFIG_USB_ACM=y"; then
+    # install usb bridge and wrapper
+    mkdir -p /mnt/UDISK/bin
+    ln -sf ${SCRIPT_DIR}/usb_bridge /mnt/UDISK/bin/usb_bridge
+    chmod +x /mnt/UDISK/bin/usb_bridge
+    ln -sf ${SCRIPT_DIR}/usb_bridge_wrapper.sh /mnt/UDISK/bin/cartographer_wrapper.sh
+    chmod +x /mnt/UDISK/bin/cartographer_wrapper.sh
+
+    # install service
+    ln -sf ${SCRIPT_DIR}/cartographer.init /etc/init.d/cartographer
+    ln -sf ${SCRIPT_DIR}/cartographer.init /opt/etc/init.d/S50cartographer
+    /etc/init.d/cartographer start
+    CARTO_SERIAL="/dev/cartographer"
+else
+    echo "I: native USB ACM support detected, skipping usb bridge"
+    CARTO_SERIAL="/dev/ttyACM0"
 fi
 
-#TODO: how do we detect if we should upgrade?
-upgrade_pip() {
-    echo "I: upgrading klippy-env pip version"
-    wget https://bootstrap.pypa.io/get-pip.py
-    ~/klippy-env/bin/python3 ./get-pip.py
-    rm -f ./get-pip.py
-}
-upgrade_pip
 
-# ensure we are pulling wheels from piwheels
-if ! grep -q 'extra-index-url=https://www.piwheels.org/simple' /etc/pip.conf; then
-    echo 'extra-index-url=https://www.piwheels.org/simple' >> /etc/pip.conf
-fi
-
-# install requirements
-echo "I: installing cartographer requirements"
-~/klippy-env/bin/pip \
-    install \
-    --upgrade \
-    --requirement cartographer-klipper/requirements.txt
-
-# fix the klippy-env libraries
-python3 ${SCRIPT_DIR}/../../scripts/fix_venv.py ~/klippy-env
-
-# drop missing libraries in place
-echo "I: installing cartographer libraries"
-cp ${SCRIPT_DIR}/*.so* /usr/lib/
-
-# install cartographer
-echo "I: installing cartographer"
-~/cartographer-klipper/install.sh
-
-# install usb-serial bridge
-mkdir -p /mnt/UDISK/bin
-#
-ln -sf  ${SCRIPT_DIR}/usb_bridge /mnt/UDISK/bin/usb_bridge
-# Added patched wrapper for non- CDC-ACM compliant kernel
-# If you're doing kernel mods, this wont be an issue for you to workaround.
-ln -sf  ${SCRIPT_DIR}/optional_mcu/usb_bridge_wrapper.sh /mnt/UDISK/bin/cartographer_wrapper.sh 
-
-chmod +x /mnt/UDISK/bin/cartographer_wrapper.sh
-ln -s ${SCRIPT_DIR}/cartographer.sh /mnt/UDISK/bin/cartographer.sh
-ln -sf ${SCRIPT_DIR}/cartographer.init /etc/init.d/cartographer
-ln -sf ${SCRIPT_DIR}/cartographer.init /opt/etc/init.d/S50cartographer
-/etc/init.d/cartographer start
-
-# install cartographer convenience scripts
-ln -sf ${SCRIPT_DIR}/cartographer.sh /mnt/UDISK/bin
-chmod +x /mnt/UDISK/bin/cartographer.sh
-
-# remove the prtouch_v3 section from printer.cfg
+# update printer config
 python ${SCRIPT_DIR}/alter_config.py
-# add a commented include to custom/main.cfg
 python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
     ~/printer_data/config/custom/main.cfg prtouch_v3.cfg True
-# add the main.cfg to printer.cfg
 python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
     ~/printer_data/config/printer.cfg custom/main.cfg
-# I believe I still want this as a true copy
-# add the cartographer.cfg to main.cfg
 cp ${SCRIPT_DIR}/cartographer.cfg ~/printer_data/config/custom
-python ${SCRIPT_DIR}/../../scripts/ensure_included.py ~/printer_data/config/custom/main.cfg cartographer.cfg
+# update serial port based on kernel ACM support
+sed -i "s|serial: /dev/cartographer|serial: ${CARTO_SERIAL}|g" ~/printer_data/config/custom/cartographer.cfg
+python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
+    ~/printer_data/config/custom/main.cfg cartographer.cfg
 
-# make this a patch
-cd ~/klipper/klippy/extras
-#patch < ${SCRIPT_DIR}/homing.patch
-# replace conditional prtouch_v3 lookup with scanner lookup
-sed -i "s|self\.prtouch_v3 = self\.printer\.lookup_object('prtouch_v3') if self\.printer\.objects\.get('prtouch_v3') else None|self.prtouch_v3 = self.printer.lookup_object('scanner')|" homing.py || true
-# replace direct prtouch_v3 lookup with scanner lookup (legacy pattern)
-sed -i "s|self\.prtouch_v3 = printer\.lookup_object('prtouch_v3')|self.prtouch_v3 = self.printer.lookup_object('scanner')|" homing.py || true
-# comment out suspended_det_status block
-sed -i "s|^\([[:space:]]*\)if self\.prtouch_v3 is not None:|\1# if self.prtouch_v3 is not None:|" homing.py || true
-sed -i "s|^\([[:space:]]*\)suspended_det_status = self\.prtouch_v3\.get_suspended_det_status()|\1# suspended_det_status = self.prtouch_v3.get_suspended_det_status()|" homing.py || true
-rm -f klipper/klippy/extras/homing.pyc
-cd -
+# install klipper patches
+ln -sf ${SCRIPT_DIR}/patches/mcu.py ~/klipper/klippy/mcu.py
+ln -sf ${SCRIPT_DIR}/patches/serialhdl.py ~/klipper/klippy/serialhdl.py
+ln -sf ${SCRIPT_DIR}/patches/clocksync.py ~/klipper/klippy/clocksync.py
+ln -sf ${SCRIPT_DIR}/patches/configfile.py ~/klipper/klippy/configfile.py
+ln -sf ${SCRIPT_DIR}/patches/homing.py ~/klipper/klippy/extras/homing.py
+ln -sf ${SCRIPT_DIR}/patches/temperature_mcu.py ~/klipper/klippy/extras/temperature_mcu.py
+rm -f ~/klipper/klippy/extras/bed_mesh.py*
+ln -sf ${SCRIPT_DIR}/patches/bed_mesh.py ~/klipper/klippy/extras/bed_mesh.py
 
-# replace the bed mesh
-rm -fr ~/klipper/klippy/extras/bed_mesh.py*
-ln -sf ${SCRIPT_DIR}/bed_mesh.py ~/klipper/klippy/extras/bed_mesh.py
+# register for updates
+if [ -f ~/printer_data/config/moonraker.conf ]; then
+    echo "I: registering cartographer update manager"
+    mkdir -p ~/printer_data/config/updates
+    cp ${SCRIPT_DIR}/update-manager.cfg ~/printer_data/config/updates/cartographer.cfg
+    python3 ~/k2-improvements/scripts/moonraker_include.py updates/cartographer.cfg
+else
+    echo "W: moonraker not found, skipping update manager registration"
+fi
 
-# Optional MCU Addon for Cartographer probes that disconnect during printing.
-# remove existing files : should make this a backup. eh sock reset will do the trick.
-rm -fr ~/klipper/klippy/clocksync.py*
-rm -fr ~/klipper/klippy/extras/homing.py*
-rm -fr ~/klipper/klippy/mcu.py*
-rm -fr ~/klipper/klippy/serialhdl.py*
-# now link the relevant .py files back into klipper
-ln -sf ${SCRIPT_DIR}/optional_mcu/clocksync.py ~/klipper/klippy/clocksync.py
-ln -sf ${SCRIPT_DIR}/optional_mcu/homing.py ~/klipper/klippy/extras/homing.py
-ln -sf ${SCRIPT_DIR}/optional_mcu/mcu.py ~/klipper/klippy/mcu.py
-ln -sf ${SCRIPT_DIR}/optional_mcu/serialhdl.py ~/klipper/klippy/serialhdl.py
-
-# restart klipper
+echo "I: restarting klipper"
 /etc/init.d/klipper restart
+

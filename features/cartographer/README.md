@@ -63,11 +63,9 @@ The **TL;DR** of _kernel_ vs _user space_ is that our solution is a _bit hacky_ 
 
 ## What do I need?
 
-### Right Angle Cartographer
+### Cartographer Probe
 
-For the current mount, you'll need a [Right Angle Cartographer](https://cartographer3d.com/products/cartographer-probe-v3-with-adxl345-right-angle-can-usb)
-
-There are also [color options](https://cartographer3d.com/products/cartographer-v3-colour-edition), but be _sure_ you get the **Right Angle** variant.
+You'll need either the [Cartographer V4 AIO Standard](https://cartographer3d.com/products/cartographer-v4-aio-standard) (newer version) or the [Cartographer V3 Right Angle](https://cartographer3d.com/products/cartographer-probe-v3-with-adxl345-right-angle-can-usb). Both work with the current mount and spacers.
 
 ### M2.6x20mm screws/bolts
 
