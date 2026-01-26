@@ -8,6 +8,12 @@ If you're curious what each of these scripts do, i encourage all to open the ins
 You'd be surprised what you'll learn. 
 
 
+
+# NOTICE
+* Version 1.1.4.8 is not compatible with k2-improvements. 
+* Recommended latest compatible version is 1.1.3.13.
+* Cartographer v4 is currently unsupported pending firmware and software changes.
+
 ## DISCLAIMER
 
 Use at your own risk, I'm not responsible for fires or broken dreams.  But you do get to keep both halves if something breaks.
@@ -65,6 +71,10 @@ Donations are definitely _not required_, however they are always appreciated.  I
 
 # Latest Added Features:
 
+## Cartographer V4 Support
+Replaced the Cartographer Feature Folder with [Jacob10383's](https://github.com/Jacob10383) commit enabling [Cartographer V4](https://github.com/Jacob10383/k2-improvements/commit/a6698912233346fe593b7ae30bd22693854f9cac) support.
+Installs the new [Cartographer3D-plugin](https://github.com/CampbellFabrications/cartographer3d-plugin) as a fork of [Jacob10383](https://github.com/Cartographer3D/cartographer3d-plugin/commit/ddcb2537826fac11b9130bc4011ed16e25627d46)'s work on enabling k2 compatability. that replaces the previous deprecated 'cartographer-klipper'.
+
 ## Resonance Tester
 Added the Resonance Tester code from Jacobean. Here's it's [Readme](https://github.com/campbellfabrications/k2-improvements/blob/main/features/resonance-tester/README.md) file.
 
@@ -80,7 +90,6 @@ Allows `[mcu scanner]` within Cartographer.cfg to be defined as optional with th
 Massive Thanks to [Jacob10383](https://github.com/Jacob10383) for [This](https://github.com/Jacob10383/Printer/commit/670d405f1a6d40760fe4e9c74c87a0100c1135a4#diff-45f5ce587b170586644c8277b076bd26669b8262c464575c9e20f15f665acead) commit.
 
 Set this value to `is_non_critical: true` to allow disconnects without the printer stopping.
-
 
 
 ## Features
@@ -107,7 +116,9 @@ Sadly, many of the K2 beds resemble a taco or valley.  In the [bed_leveling](bed
 
 ## Credits
 
+
 * [@jamincollins](https://github.com/jamincollins) - The Guy who made this project to begin with
+* [@Jacob10383](https://github.com/Jacob10383/) - KAMP, Resonance Sweeping changes for `shaper_calibrate`, slowly merging his fork and standalone Printer repo into this repo.
 * [@Guilouz](https://github.com/Guilouz) - standing on the shoulders of giants
 * [@stranula](https://github.com/stranula)
 * [@juliosueiras](https://github.com/juliosueiras)
@@ -118,6 +129,8 @@ Sadly, many of the K2 beds resemble a taco or valley.  In the [bed_leveling](bed
 * Entware - [https://github.com/Entware/Entware](https://github.com/Entware/Entware)
 * Obico - [https://www.obico.io/](https://www.obico.io/)
 * SimplyPrint - [https://simplyprint.io/](https://simplyprint.io/)
+* KAMP - [https://github.com/kyleisah](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging)
+* GuppyScreen - [https://github.com/foo](https://github.com/foo/guppyscreen)
 
 ## FAQ
 
