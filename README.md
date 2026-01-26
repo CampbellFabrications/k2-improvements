@@ -10,9 +10,8 @@ You'd be surprised what you'll learn.
 
 
 # NOTICE
-* Version 1.1.4.8 is not compatible with k2-improvements. 
+* Version 1.1.4.8 and later is not compatible with k2-improvements. 
 * Recommended latest compatible version is 1.1.3.13.
-* Cartographer v4 is currently unsupported pending firmware and software changes.
 
 ## DISCLAIMER
 
