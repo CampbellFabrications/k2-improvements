@@ -754,13 +754,17 @@ class MCU:
 
     # Non-critical MCU methods
     def handle_non_critical_disconnect(self):
+        if self.non_critical_disconnected:
+            return
         self.non_critical_disconnected = True
+        self._get_status_info['non_critical_disconnected'] = True
+        self._reconnecting = False
         self._clocksync.disconnect()
         self._disconnect()
         self._reactor.update_timer(
             self.non_critical_recon_timer, self._reactor.NOW)
         self._printer.send_event(self._non_critical_disconnect_event_name)
-        self._gcode.respond_info("mcu: '%s' disconnected!" % (self._name,))
+        self._gcode.respond_raw("!! mcu: '%s' disconnected!" % (self._name,))
         logging.info("Non-critical MCU '%s' disconnected", self._name)
 
     def _check_serial_exists(self):
@@ -776,7 +780,7 @@ class MCU:
     def non_critical_recon_event(self, eventtime):
         success = self.recon_mcu()
         if success:
-            self._gcode.respond_info("mcu: '%s' reconnected!" % (self._name,))
+            self._gcode.respond_info("mcu: '%s' reconnect succeeded." % (self._name,))
             return self._reactor.NEVER
         else:
             return eventtime + self.reconnect_interval
@@ -786,19 +790,23 @@ class MCU:
         try:
             res = self._mcu_identify()
             if not res:
-                self._reconnecting = False
                 return False
             self.reset_to_initial_state()
             self.non_critical_disconnected = False
+            self._get_status_info['non_critical_disconnected'] = False
             self._connect()
-            self._reconnecting = False
+            self._gcode.respond_info("mcu: '%s' reconnected, loading models..." % (self._name,))
             self._printer.send_event(self._non_critical_reconnect_event_name)
             return True
         except Exception as e:
-            self._reconnecting = False
+            logging.exception("Non-critical MCU '%s' reconnect failed: %s", self._name, str(e))
             self.non_critical_disconnected = True
             self._get_status_info['non_critical_disconnected'] = True
+            self._clocksync.disconnect()
+            self._disconnect()
             return False
+        finally:
+            self._reconnecting = False
 
     def reset_to_initial_state(self):
         if self._cached_init_state:
