@@ -24,5 +24,5 @@ install_feature macros/bed_mesh
 install_feature macros/m191
 install_feature macros/start_print
 install_feature macros/overrides
-install_feature webcam-fix
+#install_feature webcam-fix
 install_feature resonance-tester
