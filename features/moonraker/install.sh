@@ -48,12 +48,12 @@ remove_legacy_symlinks() {
 }
 
 fetch_moonraker() {
-    progress "Fetching mooonraker ..."
+    progress "Fetching Jacob10383's mooonraker ..."
     # clone my mooonraker fork
     if [ -d moonraker/.git ]; then
         git -C moonraker pull
     else
-        git clone https://github.com/CampbellFabrications/moonraker.git
+        git clone https://github.com/Jacob10383/moonraker.git
     fi
     # ensure we are on the k2 branch
     git -C moonraker checkout k2

@@ -7,11 +7,11 @@ cd ${HOME}
 
 # clone cartographer plugin
 if [ ! -d cartographer3d-plugin/.git ]; then
-    echo "I: cloning cartographer plugin"
+    echo "I: cloning Jacob10383's cartographer plugin"
     if [ -d cartographer3d-plugin ]; then
         rm -rf cartographer3d-plugin
     fi
-    git clone https://github.com/CampbellFabrications/cartographer3d-plugin.git
+    git clone https://github.com/Jacob10383/cartographer3d-plugin.git
 fi
 
 echo "I: installing python dependencies"

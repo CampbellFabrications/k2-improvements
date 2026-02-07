@@ -1,20 +1,14 @@
 #!/bin/sh
 set -e
 
-# Path to the target script
-SCRIPT_PATH="/usr/bin/auto_uvc.sh"
+SCRIPT_DIR=$(readlink -f $(dirname ${0}))
 
-# Flag to search for and new value
-FLAG="MAIN_PIC_FPS"
-NEW_VALUE="30"
-
-# Check if the script exists
-if [ ! -f "$SCRIPT_PATH" ]; then
-  echo "Script not found: $SCRIPT_PATH"
-  exit 1
+# Back up original auto_uvc.sh if it exists
+if [ -f /usr/bin/auto_uvc.sh ] && [ ! -f /usr/bin/auto_uvc.sh.bak ]; then
+    cp /usr/bin/auto_uvc.sh /usr/bin/auto_uvc.sh.bak
+    echo "Original auto_uvc.sh backed up to auto_uvc.sh.bak"
 fi
+# symlink auto_uvc.sh to our version that sets the webcam FPS to 30
+ln -sf ${SCRIPT_DIR}/auto_uvc.sh /usr/bin/auto_uvc.sh
 
-# Use sed to replace the flag value with the new value
-sed -i "/$FLAG/c\\$FLAG=$NEW_VALUE" "$SCRIPT_PATH"
-
-echo "Flag '$FLAG' has been updated to $NEW_VALUE in $SCRIPT_PATH"
+echo "auto_uvc.sh has been replaced with a version that sets the webcam FPS to 30"

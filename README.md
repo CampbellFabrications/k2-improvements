@@ -2,6 +2,9 @@
 
 JaminCollins has archived his repo, I have the cartographer as well as use the k2-improvements script on my K2 Plus alongside an internal USB Hub and a custom Camera addition.
 
+Most of the underlying features such as fluidd, moonraker, and cartographer3d-plugin, are being maintaned and updated by [Jacob10383](https://github.com/Jacob10383)
+* This Fork implements other minor features such as webcam modifications, and nozzle-camera additions.
+
 In the `features` folder you will find install scripts for each of the features being installed, if desired to run separately.
 
 ## DISCLAIMER
@@ -29,7 +32,7 @@ echo "all" | /usr/bin/nc -U /var/run/wipe.sock
     ![image](https://github.com/user-attachments/assets/3d242efc-4cf8-412d-b4b0-59507720f5ad)
 1. SSH to the K2 Plus using any terminal tool (e.g. PuTTy) using the printers ip adress, port 22, user "root" and the password noted in step 1.
 1. If you execute a wipe, you will need to go through setup on the K2 screen and complete all the way through creality cloud connection. This will give you the wifi/network connection that you will need and connect appropriately to creality cloud. Stop at the calibration, you can do this later.
-1. To start the boostrap install paste into the terminal `sh /mnt/UDISK/printer_data/config/bootstrap/bootstrap.sh` and hit enter.
+1. To start the boostrap install: paste into the terminal `sh /mnt/UDISK/printer_data/config/bootstrap/bootstrap.sh` and hit enter.
 1. Once the setup completes, it will log you out of your terminal and you will need to log back in.
 
 ## Installers
@@ -54,17 +57,11 @@ You are still welcome to hand pick which features you want to install.
 Replaced the Cartographer Feature Folder with [Jacob10383's](https://github.com/Jacob10383) commit enabling [Cartographer V4](https://github.com/Jacob10383/k2-improvements/commit/a6698912233346fe593b7ae30bd22693854f9cac) support.
 Installs the new [Cartographer3D-plugin](https://github.com/CampbellFabrications/cartographer3d-plugin) as a fork of [Jacob10383](https://github.com/Cartographer3D/cartographer3d-plugin/commit/ddcb2537826fac11b9130bc4011ed16e25627d46)'s work on enabling k2 compatability. that replaces the previous deprecated 'cartographer-klipper'.
 
-## Resonance Tester
-Added the Resonance Tester code from Jacobean. Here's it's [Readme](https://github.com/campbellfabrications/k2-improvements/blob/main/features/resonance-tester/README.md) file.
-
 ## Webcam-FPS 17-10-25
 The stock chamber camera is set to 15fps. `v4l2-ctl --list-formats-ext -d /dev/v4l/by-id/main-video0` reports 30fps as available. Lets get that framerate.
 
-## Moonraker Wheels & pip  
-Added `--prefer-binary` to `features/moonraker.sh`
-
 ## Non-Critical Cartographer MCU
-Allows `[mcu scanner]` within Cartographer.cfg to be defined as optional with the following flag: `is_non_critical`.
+Allows `[mcu cartographer]` within Cartographer.cfg to be defined as optional with the following flag: `is_non_critical`.
 
 Massive Thanks to [Jacob10383](https://github.com/Jacob10383) for [This](https://github.com/Jacob10383/Printer/commit/670d405f1a6d40760fe4e9c74c87a0100c1135a4#diff-45f5ce587b170586644c8277b076bd26669b8262c464575c9e20f15f665acead) commit.
 
