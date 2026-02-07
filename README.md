@@ -1,17 +1,8 @@
 # K2 Plus Improvements Script Maintainers Fork
 
-JaminCollins has archived his repo, I have the cartographer as well as use the k2-improvements script on my K2 Plus.
-I'll be updating this repo with any bug reports that i can reproduce and hopefully keep this project going into newer firmware versions released by Creality.
+JaminCollins has archived his repo, I have the cartographer as well as use the k2-improvements script on my K2 Plus alongside an internal USB Hub and a custom Camera addition.
 
 In the `features` folder you will find install scripts for each of the features being installed, if desired to run separately.
-If you're curious what each of these scripts do, i encourage all to open the install.sh files and dive into the code.
-You'd be surprised what you'll learn. 
-
-
-
-# NOTICE
-* Version 1.1.4.8 and later is not compatible with k2-improvements. 
-* Recommended latest compatible version is 1.1.3.13.
 
 ## DISCLAIMER
 
@@ -43,13 +34,7 @@ echo "all" | /usr/bin/nc -U /var/run/wipe.sock
 
 ## Installers
 
-A unified installation menu is _planned_.  For now each feature can be found under the [features](./features/) directory.  A `README.md` and installation script `install.sh` are provided for each option.
-
-The unified installer will understand inter option dependencies and ensure they are met.
-
-For now, there are two default installations:   **Note either option will take some time and seem to hang at times. Be patient as it is moving lots of files and creating venvs for klipper and moonraker full installs
-
-* Option 1: `gimme-the-jamin.sh` - Used to install carto **NOTE MUST HAVE CARTO FLASHED AND PLUGGED IN AND READY TO GO** by following instructions [here](https://github.com/campbellfabrications/k2-improvements/blob/main/features/cartographer/firmware/README.md) first.
+* Option 1: `gimme-the-jamin.sh` - Used to install cartographer features **NOTE MUST HAVE CARTO FLASHED AND PLUGGED IN AND READY TO GO** by following instructions [here](https://github.com/campbellfabrications/k2-improvements/blob/main/features/cartographer/firmware/README.md) first.
 
     To run, use the terminal command `sh /mnt/UDISK/root/k2-improvements/gimme-the-jamin.sh`
 
@@ -62,11 +47,6 @@ For now, there are two default installations:   **Note either option will take s
 They both install the same set of features (those that I use).  The only difference is whether or not the cartographer bits are installed. If you start with no-carto.sh and later get a carto, you can then run the gimme-the-jamin.sh script and it will install all of the necessary carto items appropriately.
 
 You are still welcome to hand pick which features you want to install.
-
-## Donations
-
-Donations are definitely _not required_, however they are always appreciated.  If you'd like to donate you can do so [here](https://ko-fi.com/campbellfabrications)
-
 
 # Latest Added Features:
 
